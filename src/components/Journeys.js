@@ -10,6 +10,8 @@ import { AiOutlineImport } from 'react-icons/ai';
 import { AiOutlineShareAlt } from 'react-icons/ai';
 import { AiOutlineCloudUpload } from 'react-icons/ai';
 import axios from "axios";
+import { useSelector } from "react-redux";
+import {useNavigate} from 'react-router-dom'
 
 function TablePaginator({ itemsPerPage, totalItems, paginate, currentPage }) {
   const pageNumbers = [];
@@ -31,22 +33,24 @@ function TablePaginator({ itemsPerPage, totalItems, paginate, currentPage }) {
   }
 
   return (
+    // eslint-disable-next-line
     <nav>
     <div className="page">
       <ul className="pagination">
-        <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>
+        <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>{/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a onClick={prevPage} href="#" className='page-link'>
             Previous
           </a>
         </li>
         {pageNumbers.map(number => (
           <li key={number} className={currentPage === number ? 'page-item active' : 'page-item'}>
+            {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a onClick={() => paginate(number)} href="#" className='page-link'>
               {number}
             </a>
           </li>
         ))}
-        <li className={currentPage === pageNumbers.length ? 'page-item disabled' : 'page-item'}>
+        <li className={currentPage === pageNumbers.length ? 'page-item disabled' : 'page-item'}>{/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a onClick={nextPage} href="#" className='page-link'>
             Next
           </a>
@@ -56,20 +60,27 @@ function TablePaginator({ itemsPerPage, totalItems, paginate, currentPage }) {
   </nav>
   );
 }
-
 function Journeys() {
   const [journeys, setJourneys] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.auth?.isLoggedIn || false);
 
   useEffect(() => {
-    getJourneys();
-  }, [])
+    if (!isLoggedIn) {
+      navigate('/journeys');
+      getJourneys();
+    } else {
+      navigate('/');
+      
+    }
+  }, [isLoggedIn, navigate]);
 
   const getJourneys = () => {
-    axios.get('http://localhost:3005/get_journey').then(json => setJourneys(json.data))
-  }
+    axios.get('http://localhost:3005/get_journey').then((json) => setJourneys(json.data));
+  };
 
   // Get current items
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -85,15 +96,23 @@ function Journeys() {
 
   // Display api data in table
   const renderTable = () => {
-    return currentItems.map(journey => {
+    if (currentItems.length === 0) {
       return (
-        <tr key={journey.id}>
-          <td>{journey.journey_name}</td>
-          <td>{journey.journey_status}</td>
-          <td>{journey.updated_at}</td>
+        <tr>
+          <td colSpan="3">Journey not found</td>
         </tr>
       )
-    })
+    } else {
+      return currentItems.map(journey => {
+        return (
+          <tr key={journey.id}>
+            <td><Link to={`/details/${journey.id}`}>{journey.journey_name}</Link></td>
+            <td>{journey.journey_status}</td>
+            <td>{journey.updated_at}</td>
+          </tr>
+        )
+      })
+    }
   }
 
   return (
@@ -105,22 +124,25 @@ function Journeys() {
           <h4>Add Journey Instructions</h4>
          
           <div>
-          <ul>
-             <Link to="/addjourney"><FiPlus />Add Journey</Link>
-             <Link to="" style={{ pointerEvents: "none" }}><AiOutlineImport />Import Journeys</Link>
-             <Link to="" style={{ pointerEvents: "none" }}><AiOutlineShareAlt />Share Preview</Link>
-             <Link to="" style={{ pointerEvents: "none" }}><AiOutlineCloudUpload />Content Report</Link>
-             <li><input type="text" className="search" placeholder="Search By User First Name" onChange={(e) => setSearchTerm(e.target.value)} /></li>
-        </ul>
+            <ul>
+              <Link to="/addjourney"><FiPlus />Add Journey</Link>
+              <Link to="" style={{ pointerEvents: "none" }}><AiOutlineImport />Import Journeys</Link>
+              <Link to="" style={{ pointerEvents: "none" }}><AiOutlineShareAlt />Share Preview</Link>
+              <Link to="" style={{ pointerEvents: "none" }}><AiOutlineCloudUpload />Content Report</Link>
+              <li><input type="text" className="search" placeholder="Search By User First Name" onChange={(e) => setSearchTerm(e.target.value)} /></li>
+            </ul>
           </div>
          
           <div>
             <table>
-              <thead >
+              <thead>
                 <tr>
                   <th>Journey</th>
                   <th>Status</th>
                   <th>Last Updated</th>
+                </tr>
+                <tr>
+                  <tr className="searchname"><input type="text" className="search" placeholder="Search By User First Name" onChange={(e) => setSearchTerm(e.target.value)} /></tr>
                 </tr>
               </thead>
               <tbody>{renderTable()}</tbody>
@@ -135,10 +157,9 @@ function Journeys() {
           </div>
         </div>
       </div>
-      <Footer
-/>
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 }
 
 export default Journeys;

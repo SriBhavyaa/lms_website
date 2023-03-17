@@ -1,6 +1,6 @@
 import React from "react";
-import {  Link } from "react-router-dom";
 import './App.css'
+import { NavLink } from "react-router-dom";
 
 class Sidebar extends React.Component {
   render() {
@@ -9,25 +9,26 @@ class Sidebar extends React.Component {
     <div className="nav">
     <ul>
     <li>
-      <Link to="/journeys">Journeys</Link>
+      <NavLink to="/journeys">Journeys</NavLink>
     </li>
     <li>
-      <Link to="">Activities</Link>
+      <NavLink to="" style={{pointerEvents: "none"}}>Activities</NavLink>
     </li>
     <li>
-      <Link to="">Events</Link>
+      <NavLink to="" style={{pointerEvents: "none"}}>Events</NavLink>
     </li>
     <li>
-      <Link to="/users">Users</Link>
+      <NavLink to="/users">Users</NavLink>
     </li>
     <li>
-      <Link to="">Groups</Link>
+      <NavLink to="" style={{pointerEvents: "none"}}>Groups</NavLink>
     </li>
     <li>
-      <Link to="">Session Rosters</Link>
+      <NavLink to ="" style={{pointerEvents: "none"}}>Session Rosters</NavLink>
     </li>
     </ul>
     </div>
+  
   </div>
   );
 }

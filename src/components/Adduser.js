@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Sidebar from './Sidebar';
 function Adduser() {
    

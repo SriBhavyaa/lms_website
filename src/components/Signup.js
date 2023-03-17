@@ -7,7 +7,7 @@ function Signup({ Login, error }) {
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
 
-    
+    // eslint-disable-next-line
     const handleChange = (e) => {
         const { name, value } = e.target;
         setDetails({ ...details, [name]: value });
@@ -38,7 +38,7 @@ function Signup({ Login, error }) {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0 && isSubmit) {
       console.log(details);
-    }
+    }// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formErrors]);
 
   
@@ -74,7 +74,7 @@ function Signup({ Login, error }) {
     <form onSubmit={submitHandler}>
         <div className ="form-inner">
         <h2>Register</h2>
-        {(error !="")?(<div className="error">{error}</div>) : ""}
+        {(error !=="")?(<div className="error">{error}</div>) : ""}
         <div className="form-group">
             <label htmlFor="fname">First Name:   </label>
             <input type="text" name="fname" id="fname" onChange={e => setDetails({...details, fname: e.target.value})} value={details.fname}/>

@@ -9,7 +9,7 @@ import Addstage from './Addstage';
 import { Routes, Route} from 'react-router-dom'
 import Users from './Users';
 import Adduser from './Adduser';
-
+import Details from './Details';
 
 
 function App() {
@@ -28,7 +28,8 @@ function App() {
            <Route path='addstage' element={<Addstage/>}></Route>
            <Route path='users' element={<Users/>}></Route>
            <Route path='adduser' element={<Adduser/>}></Route>
-           
+           <Route path='details/:id' element={<Details/>}></Route>
+
         </Routes>
        </div>
        </>

@@ -2,20 +2,23 @@ import React, { useState, useEffect } from "react";
 import axios from 'axios'; 
 import {useNavigate} from 'react-router-dom'
 import Header from "./Header";
-
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../store/authSlice";
 
 
 function Login() {
     const [credentials, setCredentials] = useState({email: "", password:""});
     const [formErrors, setFormErrors] = useState({});
     const [isSubmit, setIsSubmit] = useState(false);
-
+ // eslint-disable-next-line
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCredentials({ ...credentials, [name]: value });
       };
-      
-     const submitHandler = (e) => {
+     
+      const dispatch = useDispatch(); 
+     
+      const submitHandler = (e) => {
           e.preventDefault();
           setFormErrors(validate(credentials));
           setIsSubmit(true);
@@ -32,6 +35,7 @@ function Login() {
                       console.log(response);
                       console.log("Loggedin")
                       alert("Logged in")
+                      dispatch(loginSuccess()); // dispatch the loginSuccess action
                       navigate('/journeys')
                       }, (error) => {
                       console.log(error);
@@ -46,7 +50,7 @@ function Login() {
         console.log(formErrors);
         if (Object.keys(formErrors).length === 0 && isSubmit) {
           console.log(credentials);
-        }
+        }// eslint-disable-next-line react-hooks/exhaustive-deps
       }, [formErrors]);
     
       
@@ -90,7 +94,7 @@ function Login() {
             <input type="password" name="password" id="password" onChange={e => setCredentials({...credentials, password: e.target.value})} value={credentials.password}/>
         </div>
         <input type="submit" value ="Login"></input>
-       
+       {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
         <a href="#">Forgot Password?</a>
         <br/>
         First time users <a href="/signup">Click</a> here

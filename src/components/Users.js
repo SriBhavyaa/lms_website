@@ -38,19 +38,19 @@ function TablePaginator({ itemsPerPage, totalItems, paginate, currentPage }) {
     <nav>
     <div className="page">
       <ul className="pagination">
-        <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>
+        <li className={currentPage === 1 ? 'page-item disabled' : 'page-item'}>{/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a onClick={prevPage} href="#" className='page-link'>
             Previous
           </a>
         </li>
         {pageNumbers.map(number => (
-          <li key={number} className={currentPage === number ? 'page-item active' : 'page-item'}>
+          <li key={number} className={currentPage === number ? 'page-item active' : 'page-item'}>{/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a onClick={() => paginate(number)} href="#" className='page-link'>
               {number}
             </a>
           </li>
         ))}
-        <li className={currentPage === pageNumbers.length ? 'page-item disabled' : 'page-item'}>
+        <li className={currentPage === pageNumbers.length ? 'page-item disabled' : 'page-item'}>{/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
           <a onClick={nextPage} href="#" className='page-link'>
             Next
           </a>
@@ -79,7 +79,7 @@ function Users()
   useEffect ( () => {
       getUsers()
   },[])
- 
+   // eslint-disable-next-line
   const [isSubmit, setIsSubmit] = useState(false);
   const submitHandler = (e) => {
     e.preventDefault();
